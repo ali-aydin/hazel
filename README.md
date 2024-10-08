@@ -1,4 +1,4 @@
-# hazel
+# Hazel
 
 ### Yet another jQuery notification plugin. Made for personal use. Works fine.
 
