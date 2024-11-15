@@ -1,4 +1,4 @@
-// Hazel.js
+//Hazel.js
 (function($) {
     $.fn.hazel = function(message, type = 'success', duration = 2000) {
         // Define type-based background colors
@@ -13,36 +13,52 @@
         // Get background color based on type
         var backgroundColor = typeStyles[type] || 'black';
 
-        // Create the notification div if it doesn't exist
-        var $notification = $('#hazel-notification');
-        if ($notification.length === 0) {
-            $notification = $('<div>', {
-                id: 'hazel-notification',
+        // Create a container for notifications if it doesn't exist
+        var $container = $('#hazel-container');
+        if ($container.length === 0) {
+            $container = $('<div>', {
+                id: 'hazel-container',
                 css: {
                     position: 'fixed',
                     top: '20px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    padding: '10px',
-                    'border-radius': '5px',
                     'z-index': 1000,
-                    display: 'none',
-                    'white-space': 'nowrap'
+                    display: 'flex',
+                    'flex-direction': 'column',
+                    gap: '10px', // Space between notifications
+                    'align-items': 'center'
                 }
             }).appendTo('body');
         }
 
-        // Apply the styles for the selected type
-        $notification.css({
-            'background-color': backgroundColor,
-            color: 'white'
-        });
+        // Create a new notification element
+        var $notification = $('<div>', {
+            css: {
+                padding: '10px',
+                'border-radius': '5px',
+                'background-color': backgroundColor,
+                color: 'white',
+                'white-space': 'nowrap',
+                'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
+                opacity: 0, // Start hidden for fade-in effect
+                transition: 'opacity 0.2s ease'
+            },
+            text: message
+        }).appendTo($container);
 
-        // Display the notification
-        $notification.text(message)
-                     .fadeIn(200)
-                     .delay(duration)
-                     .fadeOut(200);
+        // Fade in the notification
+        setTimeout(() => {
+            $notification.css('opacity', 1);
+        }, 0);
+
+        // Fade out and remove the notification after the duration
+        setTimeout(() => {
+            $notification.css('opacity', 0);
+            setTimeout(() => {
+                $notification.remove();
+            }, 200); // Match fade-out duration
+        }, duration);
 
         return this;
     };
