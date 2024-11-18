@@ -23,7 +23,7 @@
                     top: '20px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    'z-index': 1000,
+                    'z-index': getHighestZIndex() + 10, // Dynamically set z-index
                     display: 'flex',
                     'flex-direction': 'column',
                     gap: '10px', // Space between notifications
@@ -61,5 +61,17 @@
         }, duration);
 
         return this;
+
+        // Helper function to find the highest z-index in the DOM
+        function getHighestZIndex() {
+            var highest = 0;
+            $('*').each(function() {
+                var current = parseInt($(this).css('z-index'), 10);
+                if (!isNaN(current) && current > highest) {
+                    highest = current;
+                }
+            });
+            return highest;
+        }
     };
 }(jQuery));
